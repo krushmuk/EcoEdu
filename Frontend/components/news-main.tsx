@@ -12,17 +12,14 @@ To read more about using these font, please visit the Next.js documentation:
 **/
 
 'use client'
-import { Eczar } from 'next/font/google'
-import { Fraunces } from 'next/font/google'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { EventCard } from '@/components/event-card'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { getEvents } from '@/app/Filters'
-import {url} from '@/back_config'
 import {Logo} from '@/components/logo'
+import { Space } from 'lucide-react';
 
 export function Header(){
   return (
@@ -30,9 +27,9 @@ export function Header(){
         <div className="flex items-center ml-32 justify-between">
           <Link href="/" className="flex items-center gap-2" prefetch={false}>
             <Logo className="h-8 w-8 text-green-500" />
-            <span className="text-4xl font-semibold">EcoNews</span>
+            <span className="text-4xl font-semibold">ЭкоПросвет</span>
           </Link>
-          <nav className="flex items-center gap-6 mr-32">
+          {/* <nav className="flex items-center gap-6 mr-32">
             <Link href="#" className="text-gray-600 hover:text-green-500" prefetch={false}>
               Home
             </Link>
@@ -48,9 +45,9 @@ export function Header(){
             <Link href="#" className="text-gray-600 hover:text-green-500" prefetch={false}>
               Contact
             </Link>
-          </nav>
-          <Button variant="outline" className="md:hidden">
-            <MenuIcon className="h-6 w-6" />
+          </nav> */}
+          <Button variant="outline" className="">
+            <Link href="/account/register">Регистрация</Link>
           </Button>
         </div>
     </div>
@@ -74,10 +71,9 @@ export function Footer(){
 }
 
 export function NewsMain() {
-  let filters = [useState(false),useState(false),useState(false),useState(false),useState(false)]
+  let filters = [useState(false),useState(false),useState(false),useState(false),useState(false),useState(false),useState(false),useState(false)]
   const [content, setContent] = useState([])
   const [search, setSearch] = useState('')
-
   function FilterButton(title:string, state:any){
     const [clicked, setClicked] = state
 
@@ -97,7 +93,6 @@ export function NewsMain() {
           {title}
         </div>)
     }
-    
   }
   async function applyFilter(){
     setContent(await getEvents(filters))
@@ -110,7 +105,7 @@ export function NewsMain() {
   useEffect(() => {  
 
   }, [content])
-
+  console.log(content)  
   return (
       <main className="flex-1">
         <section className="bg-[#f5f5f5] py-12 md:py-20">
@@ -149,11 +144,16 @@ export function NewsMain() {
                 <div className="p-6">
                   <h2 className="text-2xl font-bold mb-4">Категории</h2>
                   <nav className="space-y-3 text-lg">
-                    {FilterButton('Окружающая среда', filters[0])}
-                    {FilterButton('Возобновляемая энергия', filters[1])}
-                    {FilterButton('3-ий', filters[2])}
-                    {FilterButton('4-ый', filters[3])}
-                    {FilterButton('Сохранение природы', filters[4])}
+                    {FilterButton('Лекция', filters[0])}
+                    {FilterButton('Ярмарка', filters[1])}
+                    {FilterButton('Квест', filters[2])}
+                    {FilterButton('Волонтерство', filters[3])}
+                  </nav>
+                  <nav className="space-y-3 text-lg py-6">
+                    {FilterButton('Дети', filters[4])}
+                    {FilterButton('Молодежь', filters[5])}
+                    {FilterButton('Зрелые', filters[6])}
+                    {FilterButton('Пенсионеры', filters[7])}
                   </nav>
                   <Button onClick={applyFilter} className="mt-3 bg-green-500 text-white hover:bg-green-600 transition-colors w-64 text-lg">Filter</Button>
                   <div className='h-40 w-40'></div>
@@ -161,8 +161,8 @@ export function NewsMain() {
               </div>
               <div className="col-span-3 grid gap-16 grid-cols-3">
                 { content.length !== 0 ?  (content.map((el) => (
-                  <div>{EventCard(el['title'], el['discription'], el['categories'].split(','))}</div>
-                ))): (<div>анлука</div>)} 
+                  <div>{EventCard(el['id'], el['title'], el['description'], el['categories'].split(','), el['picture'])}</div>
+                ))): (<div className='text-xl text-muted-foreground'>loading...</div>)} 
                 {/* {EventCard(
                   'Crazy title',
                    'A local initiative is making waves by finding new ways to recycle materials, reducing landfill waste and promoting a circular economy. Also thas a bit sus',

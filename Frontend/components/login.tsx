@@ -23,34 +23,34 @@ To read more about using these font, please visit the Next.js documentation:
 - App Directory: https://nextjs.org/docs/app/building-your-application/optimizing/fonts
 - Pages Directory: https://nextjs.org/docs/pages/building-your-application/optimizing/fonts
 **/
+'use client'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import {registerFroms} from "@/app/forms"
+import {loginFroms} from "@/app/forms"
+import { useRouter } from 'next/navigation'
 import Link from "next/link"
 
-export function Register() {
-  
+export function Login() {
+  const router = useRouter()
+  function handleForm(formData: FormData){
+    loginFroms(formData).then(res => {
+      localStorage.setItem("accessToken", res['access']);
+      localStorage.setItem("refreshToken", res['refresh']);
+      router.push('/')
+    })
+  }
   return (
-    <div className="flex items-center justify-center min-h-[100dvh] bg-background">
+    <div className="flex items-center justify-center min-h-[80dvh] bg-background">
       <Card className="w-full max-w-md p-6 sm:p-8">
         <CardHeader>
-          <CardTitle className="text-center text-3xl font-bold">Регистрация</CardTitle>
-          <CardDescription>Создай свой аккаунт, чтобы смотреть все самые последние новости.</CardDescription>
+          <CardTitle className="text-center text-3xl font-bold">Вход</CardTitle>
+          <CardDescription>Войди в свой аккаунт чтобы получить доступ к полному фунционалу.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={registerFroms} className="grid gap-5">
-            <div className="grid gap-2">
-              <Label htmlFor="name">Имя</Label>
-              <Input id="name" placeholder="Арнольд" required name="first_name" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="name">Фамилия</Label>
-              <Input id="name" placeholder="Шварцнеггер" required name="last_name"/>
-            </div>
+          <form className="grid gap-5">
             <div className="grid gap-2">
               <Label htmlFor="email" >Email</Label>
               <Input id="email" type="email" placeholder="Terminator3000@gmail.com" required name="email"/>
@@ -59,20 +59,8 @@ export function Register() {
               <Label htmlFor="password">Пароль</Label>
               <Input id="password" type="password" required name="password"/>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="role">Статус</Label>
-              <Select id="role" name="ac_type">
-                <SelectTrigger>
-                  <SelectValue placeholder="Выберите статус" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="0">Участник</SelectItem>
-                  <SelectItem value="1">Организатор</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <Button type="submit" className="w-full">
-              Зарегистрироваться
+            <Button formAction={handleForm} type="submit" className="w-full">
+              Войти
             </Button>
           </form>
           <Separator className="my-6" />
@@ -88,9 +76,9 @@ export function Register() {
           </div>
         </CardContent>
         <CardFooter className="text-center text-sm text-muted-foreground">
-          Уже есть аккаунт?
-          <Link href="/account/login" className="underline" prefetch={false}>
-            Войти
+          Ещё нет аккаунта?
+          <Link href="/account/register" className="underline" prefetch={false}>
+            Зарегистрироваться
           </Link>
           <br />
         </CardFooter>

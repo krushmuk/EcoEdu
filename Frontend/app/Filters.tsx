@@ -5,7 +5,7 @@ export async function getEvents(categ=[], search=[], sort=[]){
     let categories = Array()
     for (let i = 0; i < categ.length; i++){
         if (categ[i][0] == true) {
-            categories.push(filters[i][0])
+            categories.push(filters[i])
         }
     }
     let data = {
@@ -32,7 +32,7 @@ export async function getEvents(categ=[], search=[], sort=[]){
 }
 
 export async function getEvent(id){
-    let resp = await fetch(url+'api/get_event?id='+router.query.id?.toString(), {
+    let resp = await fetch(url+'api/get_event?id='+id, {
       method: 'GET',
       mode: 'cors',
   })

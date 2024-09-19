@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from datetime import datetime
+from rest_framework.permissions import IsAuthenticated
+from DB.premission import OrganizerOnlyPermission
 from DB.Serializers import EventSerializer, UserSerializer
 from DB.models import Event, User
 
@@ -121,7 +123,9 @@ data = {
 "end_time": "20240915T1030"
 }
 '''
+
 @api_view(['POST'])
+@permission_classes([OrganizerOnlyPermission])
 def create_event(request):
     data = request.data
     event = {
@@ -129,7 +133,8 @@ def create_event(request):
         'description': data['description'],
         'categories': data['categories'],
         'start_time': datetime.fromisoformat(data['start_time']),
-        'end_time': datetime.fromisoformat(data['end_time'])
+        'end_time': datetime.fromisoformat(data['end_time']),
+        # 'picture': data['picture']
     }
     event_ser = EventSerializer(data=event)
     if not event_ser.is_valid():

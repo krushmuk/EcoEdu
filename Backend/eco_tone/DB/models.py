@@ -10,6 +10,8 @@ class Event(models.Model):
     categories = models.CharField(max_length=100)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+    # organizer = models.ForeignKey(User, on_delete=models.CASCADE)
+    picture = models.CharField(max_length=200, default='template.png')
 
 class User(AbstractUser):
     username = None

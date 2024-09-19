@@ -28,31 +28,33 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 
-export function EventPage(data) {
+export function EventPage(data:[]) {
   return (
-    <div className="flex flex-col min-h-[100dvh]">
-      <main className="flex-1">
-      <section className="bg-[url('/placeholder.svg?height=400&width=1600')] bg-cover bg-center py-24 md:py-48">
-          <div className="container mx-auto px-6 text-center text-popover">
-            <h1 className="text-4xl font-bold tracking-wide  md:text-5xl">
-              Выставка устойчивого образа жизни
-
-            </h1>
-            <p className="mt-4 text-lg">Сентябрь 15-17, 2024 | Москва, 13-я Парковая ул.</p>
+    <div>{data.length == 0 ? (<h1>Loading...</h1>) : (
+    <div className="flex flex-col min-h-[100dvh] ">
+      <main className="flex-1" >
+        <section className="py-24 md:py-48 bg-cover bg-center" style={{ backgroundImage: 'url(/'+data['picture']+')' }}>
+          <div className="">
+            <div className="container mx-auto px-6 text-center text-popover">
+              <h1 className="text-4xl font-bold tracking-wide  md:text-5xl">
+                {data['title']}
+              </h1>
+              <p className="mt-4 text-lg">Москва, 13-я Парковая ул.</p>
+            </div>
           </div>
         </section>
-        <section className="bg-gradient-to-b from-[#f0fbf0] to-white py-12 md:py-8">
+        <section className=" py-12 md:py-8">
           <div className="container mx-auto px-6">
-          <div className="grid gap-12 md:grid-cols-2">
+            <div className="grid gap-12 md:grid-cols-2">
               <div>
               <h2 className="text-2xl text-center font-bold tracking-wide text-[#f87171]">О мероприятии</h2>
                 <p className="text-foreground">
-                  Выставка Sustainable Living Expo — это трехдневное мероприятие, на котором демонстрируются последние инновации и практики в экологически чистой жизни. У участников будет возможность поучиться у экспертов отрасли, примите участие в интерактивных семинарах и откройте для себя экологически чистые продукты и услуги.
+                  {data['description']}
                 </p>
               </div>
               <div>
-              <div className="bg-muted p-4 rounded-t-lg">
-                  <strong className="text-foreground">Дата:</strong> Сентябрь 15-17, 2024
+                <div className="bg-muted p-4 rounded-t-lg">
+                  <strong className="text-foreground">Дата:</strong> {data['start_time'].slice(0,10)}
                 </div>
                 <div className="mt-8 bg-muted p-4 rounded-t-lg">
                   <strong className="text-foreground">Место проведения:</strong> Москва, 13-я Парковая ул.
@@ -67,7 +69,7 @@ export function EventPage(data) {
             </div>
           </div>
         </section>
-        <section className="bg-gradient-to-b from-white to-white py-12 md:py-16">
+        <section className="py-12 md:py-16">
           <div className="container mx-auto px-6">
             <h2 className="text-2xl text-center font-bold tracking-wide text-foreground">Расписание</h2>
             <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -125,10 +127,9 @@ export function EventPage(data) {
             </div>
           </div>
         </section>
-
       </main>
-
     </div>
+    )} </div>
   )
 }
 
